@@ -1,8 +1,7 @@
 package Date::DayOfNthWeek;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
-use 5.008;
 use strict;
 use warnings;
 
@@ -148,7 +147,7 @@ __END__
 =head1 NAME
 
 Date::DayOfNthWeek - Simple Perl module for finding the first, last or
-the Nth Tuesday (or any other day) of the month.
+the Nth (Sun .. Sat) of the month.
 
 =head1 SYNOPSIS
 
@@ -173,7 +172,7 @@ the Nth Tuesday (or any other day) of the month.
 =head1 ABSTRACT
 
 Date::DayOfNthWeek - Simple Perl module for finding out if today is
-the first, last or the Nth Tuesday (or any other day) of the month.
+the first, last or the Nth (Sun .. Sat) of the month.
 
 Has three functions:
 	last_week($);  # today is in the last week of the month
@@ -191,7 +190,7 @@ calculations.  If you want that use Date::Calc or Date::Manip.  This is meant to
 =head1 DESCRIPTION
 
 Date::DayOfNthWeek - Simple Perl module for finding the first, last or
-the Nth Tuesday (or any other day) of the month.
+the Nth (Sun .. Sat) of the month.
 
 A week is considered to start on Sunday.  There may be 1 .. 7 days in
 the first week of the month.
@@ -303,7 +302,7 @@ None by default
 
 =head1 SEE ALSO
 
-localtime()
+localtime(), examples distributed with module
 
 =head1 AUTHOR
 

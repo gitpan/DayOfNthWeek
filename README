@@ -8,11 +8,11 @@ Has three functions:
 
 	first_week($); # day is in the first week of the month
 
-Takes an int between 0 and 6 and returns 1 if today is the first [Sun - Sat] of the month 
+Takes an int between 0 and 6 and returns 1 if today is the first (Sun .. Sat) of the month 
 
 	last_week($);  # day is in the last week of the month
 
-Takes an int between 0 and 6 and returns 1 if today is the last [Sun - Sat] of the month 
+Takes an int between 0 and 6 and returns 1 if today is the last (Sun .. Sat) of the month 
 
 	week_day($$); # day is in the Nth week of the month
 

@@ -1,7 +1,8 @@
 package Date::DayOfNthWeek;
 
-our $VERSION = '0.03';
+our $VERSION = '1.0';
 
+use 5.005;
 use strict;
 use warnings;
 
@@ -9,13 +10,13 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [ qw(week_day last_week first_week) ]  );
+our %EXPORT_TAGS = ( 'all' => [ qw(day_week last_week first_week) ]  );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw();
 
-sub week_day($$) {
+sub day_week($$) {
 
 	my $day = shift;
 	my $week = shift;
@@ -66,26 +67,26 @@ sub last_week($) {
 	# This is laid out like this because using || was not giving me the correct
     # answer each time.
 
-	if ($mon == 0 ) { $max=31;}
+	if ($mon == 0 ) { $max=31;}     # January
                                  	# if the month is February is it a leap year?
 	elsif ($mon == 1 ) {                            # This is to account for leap
 		if ( $year % 4 ) { $max = 28; }             # years.  Which works like this:
 		else {                                      # if year%4 != 0  it is a
-			if  ( $year % 100 ) { $max = 28; }      # non-leap year, so Feb has 28 days
-			else { $max = 29; }                     # if year%4 == 0 it could be a leap
+			if  ( $year % 100 ) { $max = 28; }      # non-leap year, so Feb has 28 days.
+			else { $max = 29; }                     # If year%4 == 0 it could be a leap
 		}                                           # year.  If the year ends in 00,
 	}                                               # Feb has 28 days, otherwise it
                                                     # has 29 days and is a leap year.
-	elsif ($mon == 2 ) {$max=31; }
-	elsif ($mon == 3 ) {$max=30; }
-	elsif ($mon == 4 ) {$max=31; }
-	elsif ($mon == 5 ) {$max=30; }
-	elsif ($mon == 6 ) {$max=31; }
-	elsif ($mon == 7 ) {$max=31; }
-	elsif ($mon == 8 ) {$max=30; }
-	elsif ($mon == 9 ) {$max=31 }
-	elsif ($mon == 10 ) {$max=30; }
-	elsif ($mon == 11 ) {$max=31; }
+	elsif ($mon == 2 ) {$max=31; }  # March
+	elsif ($mon == 3 ) {$max=30; }  # April
+	elsif ($mon == 4 ) {$max=31; }  # May
+	elsif ($mon == 5 ) {$max=30; }  # June
+	elsif ($mon == 6 ) {$max=31; }  # July
+	elsif ($mon == 7 ) {$max=31; }  # August
+	elsif ($mon == 8 ) {$max=30; }  # September
+	elsif ($mon == 9 ) {$max=31; }  # October
+	elsif ($mon == 10 ) {$max=30; } # November
+	elsif ($mon == 11 ) {$max=31; } # December
 	else  { die "your month is out of the range 0 - 11\n"; }
 
 
@@ -166,7 +167,7 @@ the Nth (Sun .. Sat) of the month.
   # See if today is 3rd Tuesday of the month 
 
   my $week = 3;
-  my $last  = week_day($wday,$week);
+  my $last  = day_week($wday,$week);
 
 
 =head1 ABSTRACT
@@ -177,7 +178,7 @@ the first, last or the Nth (Sun .. Sat) of the month.
 Has three functions:
 	last_week($);  # today is in the last week of the month
 	first_week($); # today is in the first week of the month
-	week_day($,$); # today is in the Nth week of the month
+	day_week($,$); # today is in the Nth week of the month
 
 I wrote this to send out use in a cron job to send out reminders about
 the Morris County Perl Mongers monthly meetings.  Using Date::Calc and
@@ -199,16 +200,18 @@ Has three functions:
 
 	first_week($); # day is in the first week of the month
 
-Takes an int between 0 and 6 and returns 1 if today is the first [Sun - Sat] of the month 
+Takes an int between 0 and 6 and returns 1 if today is 
+the first [Sun - Sat] of the month 
 
 	last_week($);  # day is in the last week of the month
 
-Takes an int between 0 and 6 and returns 1 if today is the last [Sun - Sat] of the month 
+Takes an int between 0 and 6 and returns 1 if today is 
+the last [Sun - Sat] of the month 
 
-	week_day($,$); # day is in the Nth week of the month
+	day_week($,$); # day is in the Nth week of the month
 
 Takes an int between 0 and 6 [Sun - Sat] and an int for week of the
-month [1-5].  Returns 1 if today is the that day of the Nth week of
+month [1-6].  Returns 1 if today is the that day of the Nth week of
 the month.
 
 =head2 EXAMPLE
@@ -222,23 +225,23 @@ meet in a local Irish Pub on the 3rd Tuesday of the month.
 
 #!/usr/local/bin/perl
 
-use Date::DayOfNthWeek qw(week_day);
+use Date::DayOfNthWeek qw(day_week);
 
 my $d = 2; # set to the day of week I want -- SUNDAY=0
 my $w = 2; # set to the week PRIOR to the meeting so I can send out the reminder
 
-my $ok = week_day($d,$w);
+my $ok = day_week($d,$w);
 
 if ($ok) { &nextweek; }
 else     {
     my $ww = $w+1;             # keeps me from changing the value of $w 
 	if ($ww > 6) { $ww = 1; }  # fixes range input errors for wrapping to next week
-	$ok = week_day($d,$ww);
+	$ok = day_week($d,$ww);
 	if ($ok) { &tonight; }
 	else {
 		$d--;                   # see if this is the day before the meeting
 		if ($d < 0) { $d = 6; } # fixes range input error for wrapping to previous week day
-		$ok = week_day($d,$w);
+		$ok = day_week($d,$w);
 		&tomorrow if $ok;		
 	}
 } 
@@ -269,22 +272,7 @@ The trick is the hash and using the mod operation.  If you don't do something
 like this there are several cases where the answer is wrong.  This way is 100% 
 accurate.
 
-Here is the test script I used to check the formula
-
-#!/usr/local/bin/perl
-
-for $mday (1 .. 31) {
-	$date=$mday-1;
-
-	print "Mday\tWday\tWeek\n$mday\n";
-
-	for (0 ..6 ) {
-		$day = $date+$_;
-		$wday = $day%7;
-		$week  = (int($day/7))+1;
-		print "\t\t$wday\t\t$week\n";	
-	}
-} 
+See the Examples directory for more info and test scripts.
 
 Here are some fact that make the test info quicker to check
 
@@ -306,7 +294,7 @@ localtime(), examples distributed with module
 
 =head1 AUTHOR
 
-Andy Murren, E<lt>andy@murren.orgE<gt>
+Andy Murren, E<lt>amurren@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 

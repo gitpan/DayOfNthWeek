@@ -8,5 +8,5 @@ WriteMakefile(
     'PREREQ_PM'		=> {}, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM => 'DayOfNthWeek.pm', # retrieve abstract from module
-       AUTHOR     => 'Andy Murren <andy@murren.org>') : ()),
+       AUTHOR     => 'Andy Murren <amurren@cpan.org>') : ()),
 );

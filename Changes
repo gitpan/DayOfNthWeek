@@ -1,5 +1,9 @@
 Revision history for Perl extension Date::DayOfNthWeek.
 
+0.02  Tue Nov 26 23:11:05 2002
+	- Original missed some test cases. Required me to change each of 
+      the methods.  
+
 0.01  Mon Nov 25 10:59:11 2002
 	- original version; created by h2xs 1.22 with options
 		-XA -n Date::DayOfNthWeek

@@ -4,3 +4,5 @@ Makefile.PL
 MANIFEST
 README
 t/1.t
+Examples/months.txt
+Examples/mcpm.pl
